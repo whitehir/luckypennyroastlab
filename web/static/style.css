@@ -15,20 +15,11 @@ h1 {
   font-style: normal;
 }
 
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-li {
-    margin-bottom: 5px;
-}
-
 img {
     max-width: 300px;
     height: auto;
-    display: block;
-    margin-top: 20px;
+    display: inline-flex;
+    
 }
 
 a {
@@ -41,6 +32,7 @@ a:hover {
     color: white;
 }
 
+/* ----- Tables ----- */
 #main-menu {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
@@ -49,8 +41,16 @@ a:hover {
   margin-right: auto;
 }
 
-#main-menu td, #main-menu th {
-  border: 0px solid #04AA6D;
+#main-menu th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 8px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+
+#main-menu td {
   padding: 18px;
   background-color: #04AA6D;
   text-align: center;
@@ -61,10 +61,28 @@ a:hover {
     
 }
 
-#main-menu th {
+#roast-table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#roast-table td {
+  border: 0px solid #ddd;
+  padding: 8px;
+}
+
+#roast-table tr:nth-child(even){background-color: #f2f2f2;}
+
+#roast-table tr:hover {background-color: #ddd;}
+
+#roast-table th {
   padding-top: 12px;
+  padding-left: 8px;
   padding-bottom: 12px;
   text-align: left;
-  background-color: #04AA6D;
+  background-color: #3399ff;
   color: white;
 }

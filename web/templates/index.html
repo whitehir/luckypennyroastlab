@@ -2,21 +2,49 @@
 <html>
 <head>
     <title>Lucky Penny Roast Lab</title>
+    <link rel="icon" type="image/x-icon" href="../static/US_One_Cent_Obv.png">
     <link rel="stylesheet" href="/static/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1 class="rock-salt-regular">Lucky Penny Roast Lab</h1>
-    <table id="main-menu" style="width: 80%;" cellpadding="2">
-    	<trbody>
-    		<tr>
-    			<td width="25%"><a href="/roastLibrary">Roast Library</a></td>
-    			<td width="25%"><a href="/recordRoast">Create New Roast</a></td>
-    			<td width="25%"><a href="/recordDrink">Record New Drink</a></td>
-                <td width="25%">About</td>
-    		</tr>
-    	</trbody>
+    <h1 class="rock-salt-regular"><img src="../static/US_One_Cent_Obv.png" alt="LPRL" style="height: 35px; width: 35px; padding-right: 12px;" >Lucky Penny Roast Lab</h1>
+    <div>
+        <table id="main-menu" style="width: 80%;" cellpadding="2">
+                <tr>
+                    <td width="25%"><a href="/">Roast Library</a></td>
+                    <td width="25%"><a href="/recordRoast">Create New Roast</a></td>
+                    <td width="25%"><a href="/recordDrink">Record New Drink</a></td>
+                    <td width="25%">About</td>
+                </tr>
+        </table>
+    </div>
+    <div>
+        <h2 align="center">Roast Library</h2>
+        {% if data %}
+        <table id="roast-table" align="center">
+            <thead>
+                <tr>
+                    {% for column in data[0].keys() %}
+                    <th>{{ column }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                <tr>
+                    {% for value in row.values() %}
+                    <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No data found.</p>
+        {% endif %}
+    </div>
+
 </body>
 </html>
