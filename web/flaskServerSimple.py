@@ -14,7 +14,7 @@ def home():
         database="coach")
 
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM garage ORDER BY timestamp DESC LIMIT 10")
+        cursor.execute("SELECT * FROM garage ORDER BY timestamp DESC LIMIT 25")
         results = cursor.fetchall()
 
         cursor.close()

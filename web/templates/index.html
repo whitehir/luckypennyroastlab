@@ -23,7 +23,7 @@
     <div>
         <h2 align="center">Roast Library</h2>
         {% if data %}
-        <table id="roast-table" align="center">
+        <table id="roast-table"  style="width: 75%;" align="center">
             <thead>
                 <tr>
                     {% for column in data[0].keys() %}
@@ -35,7 +35,7 @@
                 {% for row in data %}
                 <tr>
                     {% for value in row.values() %}
-                    <td>{{ value }}</td>
+                    <td width="25%">{{ value }}</td>
                     {% endfor %}
                 </tr>
                 {% endfor %}
