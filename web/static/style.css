@@ -23,13 +23,13 @@ img {
 }
 
 a {
-    color: white;
+    color: black;
     text-decoration: none;
 }
 
 a:hover {
     text-decoration: underline;
-    color: white;
+    color: black;
 }
 
 /* ----- Tables ----- */
@@ -67,11 +67,13 @@ a:hover {
   width: 80%;
   margin-left: auto;
   margin-right: auto;
+  min-width: 300px;
 }
 
 #roast-table td {
   border: 0px solid #ddd;
   padding: 8px;
+  white-space: nowrap;
 }
 
 #roast-table tr:nth-child(even){background-color: #f2f2f2;}
@@ -85,4 +87,14 @@ a:hover {
   text-align: left;
   background-color: #3399ff;
   color: white;
+}
+
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination a {
+    margin: 0 10px;
+    text-decoration: none;
 }
