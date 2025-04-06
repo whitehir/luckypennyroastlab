@@ -1,29 +1,50 @@
 <!DOCTYPE html>
 <html>
+    
 <head>
     <title>Lucky Penny Roast Lab</title>
-    <link rel="icon" type="image/x-icon" href="../static/US_One_Cent_Obv.png">
+    <link rel="icon" type="image/x-icon" href="/static/US_One_Cent_Obv.png">
     <link rel="stylesheet" href="/static/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <h1 class="rock-salt-regular"><img src="../static/US_One_Cent_Obv.png" alt="LPRL" style="height: 35px; width: 35px; padding-right: 12px;" >Lucky Penny Roast Lab</h1>
+    <h1 class="rock-salt-regular">Lucky Penny Roast Lab</h1>
+    
     <div>
         <table id="main-menu" style="width: 80%;" cellpadding="2">
                 <tr>
-                    <td width="25%"><a href="/">Roast Library</a></td>
-                    <td width="25%"><a href="/recordRoast">Create New Roast</a></td>
-                    <td width="25%"><a href="/recordDrink">Record New Drink</a></td>
+                    <td width="25%"><a href="/" style="color: white;">Roast Library</a></td>
+                    <td width="25%"><a href="/recordRoast" style="color: white;">Create New Roast</a></td>
+                    <td width="25%"><a href="/recordDrink" style="color: white;">Record New Drink</a></td>
                     <td width="25%">About</td>
                 </tr>
         </table>
     </div>
-    <div>
+    
+    <div align="center">
         <h2 align="center">Roast Library</h2>
+        
+        <span>
+        <p>Country: <select id="countryFilter" onchange="applyFilters()" style="width: 125px">
+            <option value="all">All</option>
+            <option value="Ethiopia" {% if country_filter == "Ethiopia" %}selected{% endif %}>Ethiopia</option>
+            <option value="Kenya" {% if country_filter == "Kenya" %}selected{% endif %}>Kenya</option>
+        </select>
+        
+        Roast: <select id="roastFilter" onchange="applyFilters()" style="width: 125px">
+            <option value="all">All</option>
+            <option value="Full City" {% if roast_filter == "Full City" %}selected{% endif %}>Full City</option>
+            <option value="Full City+" {% if roast_filter == "Full City+" %}selected{% endif %}>Full City+</option>
+        </select></p>
+        </span>
+    </div>
+        
+    <div style="overflow-x: auto">
         {% if data %}
-        <table id="roast-table"  style="width: 75%;" align="center">
+        <table id="roast-table"  style="width: 75%; overflow-x: auto;" align="center">
             <thead>
                 <tr>
                     {% for column in data[0].keys() %}
@@ -35,16 +56,49 @@
                 {% for row in data %}
                 <tr>
                     {% for value in row.values() %}
-                    <td width="25%">{{ value }}</td>
+                    <td>{{ value }}</td>
                     {% endfor %}
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+        
+    <div class="pagination">
+        {% if page > 1 %}
+        <a href="/?page={{ page - 1 }}{% if filter_value %}&filter={{ filter_value }}{% endif %}">Previous</a>
+        {% endif %}
+
+        <span>Page {{ page }} of {{ total_pages }}</span>
+
+        {% if page < total_pages %}
+        <a href="/?page={{ page + 1 }}{% if filter_value %}&filter={{ filter_value }}{% endif %}">Next</a>
+        {% endif %}
+        
         {% else %}
         <p>No data found.</p>
         {% endif %}
     </div>
+    
+    <script>
+        function applyFilters() {
+            const countryValue = document.getElementById('countryFilter').value;
+            const roastValue = document.getElementById('roastFilter').value;
+            
+            let url = '/';
+            let params = [];
+            if (countryValue && countryValue !== "all") {
+                params.push(`country=${encodeURIComponent(countryValue)}`);
+            }
+            if (roastValue && roastValue !== "all") {
+                params.push(`roast=${encodeURIComponent(roastValue)}`);
+            }
+            if (params.length > 0) {
+                url += `?${params.join('&')}`;
+            }
+            window.location.href = url;
+        }
+    </script>
 
 </body>
 </html>
