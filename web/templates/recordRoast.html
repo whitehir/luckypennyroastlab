@@ -1,13 +1,97 @@
 <!DOCTYPE html>
 <html>
+    
 <head>
     <title>Lucky Penny Roast Lab</title>
+    <link rel="icon" type="image/x-icon" href="/static/US_One_Cent_Obv.png">
     <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
 </head>
-<body id="main-body">
+
+<body>
+    <h1 class="rock-salt-regular">Lucky Penny Roast Lab</h1>
+    
     <div>
-    	<h1>Record a New Roast</h1>
+        <table id="main-menu" style="width: 80%;" cellpadding="2">
+                <tr>
+                    <td width="25%"><a href="/" style="color: white;">Roast Library</a></td>
+                    <td width="25%"><a href="/recordRoast" style="color: white;">Create New Roast</a></td>
+                    <td width="25%"><a href="/recordDrink" style="color: white;">Record New Drink</a></td>
+                    <td width="25%">About</td>
+                </tr>
+        </table>
     </div>
-    <p><a href="/">Back</a></p>
+    
+    <div align="center">
+        <h2 align="center">Create New Roast</h2>
+
+        <form action="/submitRoast" method="POST">
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" pattern="\d{4}-\d{2}-\d{2}" placeholder="YYYY-MM-DD" required>
+
+        <label for="country">Origin:</label>
+        <select id="country" name="country" required style="width: 105px">
+            <option value="Ethiopia">Ethiopia</option>
+            <option value="Kenya">Kenya</option>
+            </select>
+
+        <label for="farm">Farm:</label>
+        <input type="text" id="farm" name="farm" required style="width: 185px"><br><br>
+
+        <label for="roaster">Roaster:</label>
+        <select id="roaster" name="roaster" required style="width: 105px">
+            <option value="Popper">Popper</option>
+            </select>
+
+        <label for="roast">Roast Level:</label>
+        <select id="roast" name="roast" required style="width: 105px">
+            <option value="City-">City-</option>
+            <option value="City">City</option>
+            <option value="City+">City+</option>
+            <option value="Full City">Full City</option>
+            <option value="Full City+">Full City+</option>
+            <option value="French">French</option>
+            </select>
+            
+        <label for="duration">Duration:</label>
+        <input type="text" id="duration" name="duration" pattern="[0-9]{1,3}:[0-5][0-9]" placeholder="MM:SS" required style="width: 55px"><br><br>
+
+        <label for="mass_in">Mass In:</label>
+        <input type="number" step="any" id="mass_in" name="mass_in" required style="width: 55px">
+
+        <label for="mass_out">Mass Out:</label>
+        <input type="number" step="any" id="mass_out" name="mass_out" required style="width: 55px">
+
+        <label for="loss">Loss:</label>
+        <input type="number" step="any" id="loss" name="loss" readonly style="width: 55px"><br><br>
+
+        <label for="profile">Profile:</label>
+        <input type="text" id="profile" name="profile" required style="width: 255px"><br><br>
+
+        <input type="submit" value="Record Roast">
+        </form>
+    </div>
+
 </body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const massIn = document.getElementById('mass_in');
+        const massOut = document.getElementById('mass_out');
+        const loss = document.getElementById('loss');
+
+        function calculateLoss() {
+            const inVal = parseFloat(massIn.value) || 0;
+            const outVal = parseFloat(massOut.value) || 0;
+            const calculatedLoss = (inVal - outVal) / inVal * 100;
+            loss.value = calculatedLoss.toFixed(1);
+        }
+
+        massIn.addEventListener('input', calculateLoss);
+        massOut.addEventListener('input', calculateLoss);
+    });
+</script>
+
 </html>
