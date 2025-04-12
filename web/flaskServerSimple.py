@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import mysql.connector
 
 app = Flask(__name__)
@@ -63,10 +63,50 @@ def home():
 def roastLibrary():
 	return render_template('roastLibrary.html')
     
-@app.route('/recordRoast')
+@app.route('/recordRoast', methods=['GET'])
 def recordRoast():
 	return render_template('recordRoast.html')
     
+@app.route('/submitRoast', methods=['POST'])
+def submitRoast():
+    if request.method == 'POST':
+        date = request.form['date']
+        country = request.form['country']
+        farm = request.form['farm']
+        roaster = request.form['roaster']
+        roast = request.form['roast']
+        duration = request.form['duration']
+        mass_in = request.form['mass_in']
+        mass_out = request.form['mass_out']
+        loss = request.form['loss']
+        profile = request.form['profile']
+        
+        formatted_duration = f"00:{duration}"
+
+        try:
+            conn = mysql.connector.connect(
+            host="localhost",
+            user="grafanaReader",
+            password="spw",
+            database="coach")
+            
+            cursor = conn.cursor()
+            sql = "INSERT INTO roast_table (date, country, farm, roaster, roast, duration, mass_in, mass_out, loss, profile) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            values = (date, country, farm, roaster, roast, formatted_duration, mass_in, mass_out, loss, profile)
+            cursor.execute(sql, values)
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return redirect(url_for('home'))
+            
+        except mysql.connector.Error as err:
+            return f"Error recording roast: {err}"
+        finally:
+            if 'conn' in locals() and conn.is_connected():
+                cursor.close()
+                conn.close()
+    return "Invalid request"
+
 @app.route('/recordDrink')
 def recordDink():
 	return render_template('recordDrink.html')

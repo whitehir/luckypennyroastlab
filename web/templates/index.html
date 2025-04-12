@@ -56,7 +56,12 @@
                 {% for row in data %}
                 <tr>
                     {% for value in row.values() %}
-                    <td>{{ value }}</td>
+                    {% if loop.last %}
+                        {% set filename = value %}
+                        <td><a href="/static/roastplots/{{ filename }}" target="_blank">{{ filename }}</a></td>
+                    {% else %}
+                        <td>{{ value }}</td>
+                    {% endif %}
                     {% endfor %}
                 </tr>
                 {% endfor %}
