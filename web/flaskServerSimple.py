@@ -59,9 +59,59 @@ def home():
             cursor.close()
             conn.close()
     
-@app.route('/roastLibrary')
-def roastLibrary():
-	return render_template('roastLibrary.html')
+@app.route('/drinkLibrary')
+def drinkLibrary():
+    page = request.args.get('page', 1, type=int)
+    drink_filter = request.args.get('drink')
+    roast_filter = request.args.get('roast')
+    
+    try:
+        conn = mysql.connector.connect(
+        host="localhost",
+        user="grafanaReader",
+        password="spw",
+        database="coach")
+        cursor = conn.cursor(dictionary=True)
+        
+        sql = "SELECT * FROM drink_table"
+        where_clauses = []
+        params = []
+        
+        if drink_filter and drink_filter != "all":
+            where_clauses.append("drink = %s")
+            params.append(drink_filter)
+        if roast_filter and roast_filter != "all":
+            where_clauses.append("roast = %s")
+            params.append(roast_filter)
+        
+        if where_clauses:
+            sql += " WHERE " + " AND ".join(where_clauses)
+        
+        sql += " ORDER BY date DESC"
+        sql += f" LIMIT {ROWS_PER_PAGE} OFFSET {(page - 1) * ROWS_PER_PAGE}"
+        
+        cursor.execute(sql, tuple(params))
+        results = cursor.fetchall()
+        
+        sql_count = "SELECT COUNT(*) FROM drink_table"
+        if where_clauses:
+            sql_count += " WHERE " + " AND ".join(where_clauses)
+            cursor.execute(sql_count, tuple(params))
+        else:
+            cursor.execute(sql_count)
+        
+        total_rows = cursor.fetchone()['COUNT(*)']
+        total_pages = (total_rows + ROWS_PER_PAGE - 1) // ROWS_PER_PAGE
+        
+        return render_template('drinkLibrary.html', data=results, drink_filter=drink_filter, roast_filter=roast_filter, page=page, total_pages=total_pages)
+
+    except mysql.connector.Error as err:
+        return f"Error: {err}"
+    
+    finally:
+        if 'conn' in locals() and conn.is_connected():
+            cursor.close()
+            conn.close()
     
 @app.route('/recordRoast', methods=['GET'])
 def recordRoast():
