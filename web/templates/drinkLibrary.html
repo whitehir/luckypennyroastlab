@@ -25,13 +25,18 @@
     </div>
     
     <div align="center">
-        <h2 align="center">Roast Library</h2>
+        <h2 align="center">Drink Library</h2>
         
         <span>
-        <p>Country: <select id="countryFilter" onchange="applyFilters()" style="width: 125px">
+        <p>Drink: <select id="drinkFilter" onchange="applyFilters()" style="width: 125px">
             <option value="all">All</option>
-            <option value="Ethiopia" {% if country_filter == "Ethiopia" %}selected{% endif %}>Ethiopia</option>
-            <option value="Kenya" {% if country_filter == "Kenya" %}selected{% endif %}>Kenya</option>
+            <option value="Espresso" {% if drink_filter == "Espresso" %}selected{% endif %}>Espresso</option>
+            <option value="Latte" {% if drink_filter == "Latte" %}selected{% endif %}>Latte</option>
+            <option value="Cappuccino" {% if drink_filter == "Cappuccino" %}selected{% endif %}>Cappuccino</option>
+            <option value="Cortado" {% if drink_filter == "Cortado" %}selected{% endif %}>Cortado</option>
+            <option value="Drip" {% if drink_filter == "Drip" %}selected{% endif %}>Drip</option>
+            <option value="Pour Over" {% if drink_filter == "Pour Over" %}selected{% endif %}>Pour Over</option>
+            <option value="Cold Brew" {% if drink_filter == "Cold Brew" %}selected{% endif %}>Cold Brew</option>
         </select>
         
         Roast: <select id="roastFilter" onchange="applyFilters()" style="width: 125px">
@@ -87,13 +92,13 @@
     
     <script>
         function applyFilters() {
-            const countryValue = document.getElementById('countryFilter').value;
+            const drinkValue = document.getElementById('drinkFilter').value;
             const roastValue = document.getElementById('roastFilter').value;
             
-            let url = '/';
+            let url = 'drinkLibrary';
             let params = [];
-            if (countryValue && countryValue !== "all") {
-                params.push(`country=${encodeURIComponent(countryValue)}`);
+            if (drinkValue && drinkValue !== "all") {
+                params.push(`drink=${encodeURIComponent(drinkValue)}`);
             }
             if (roastValue && roastValue !== "all") {
                 params.push(`roast=${encodeURIComponent(roastValue)}`);
