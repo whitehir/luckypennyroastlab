@@ -12,14 +12,13 @@
 
 <body>
     <h1 class="rock-salt-regular">Lucky Penny Roast Lab</h1>
-    
-    <div>
-        <table id="main-menu" style="width: 80%;" cellpadding="2">
-                <tr>
-                    <td width="25%"><a href="/" style="color: white;">Roast Library</a></td>
-                    <td width="25%"><a href="/recordRoast" style="color: white;">Create New Roast</a></td>
-                    <td width="25%"><a href="/drinkLibrary" style="color: white;">Drink Library</a></td>
-                    <td width="25%"><a href="/recordDrink" style="color: white;">Record New Drink</a></td>
+    <div align="center">
+        <table style="width: 80%;" cellpadding="0" align="center">
+                <tr align="center">
+                    <a href="/" style="color: white;"><img src="static/lprl-banner-1.png"></a></td>
+                    <a href="/recordRoast" style="color: white;"><img src="static/lprl-banner-2.png"></a>
+                    <a href="/drinkLibrary" style="color: white;"><img src="static/lprl-banner-3.png"></a>
+                    <a href="/recordDrink" style="color: white;"><img src="static/lprl-banner-4.png"></a>
                 </tr>
         </table>
     </div>
@@ -30,6 +29,7 @@
         <span>
         <p>Drink: <select id="drinkFilter" onchange="applyFilters()" style="width: 125px">
             <option value="all">All</option>
+            <option value="Americano" {% if drink_filter == "Americano" %}selected{% endif %}>Americano</option>
             <option value="Espresso" {% if drink_filter == "Espresso" %}selected{% endif %}>Espresso</option>
             <option value="Latte" {% if drink_filter == "Latte" %}selected{% endif %}>Latte</option>
             <option value="Cappuccino" {% if drink_filter == "Cappuccino" %}selected{% endif %}>Cappuccino</option>
@@ -43,7 +43,17 @@
             <option value="all">All</option>
             <option value="Full City" {% if roast_filter == "Full City" %}selected{% endif %}>Full City</option>
             <option value="Full City+" {% if roast_filter == "Full City+" %}selected{% endif %}>Full City+</option>
-        </select></p>
+        </select>
+
+        Sort By: <select id="sortOrder" onchange="applyFilters()" style="width: 200px">
+            <option value="date_desc">Date (Newest)</option>
+            <option value="coffee_water_asc" {% if sort_by == "coffee_water_asc" %}selected{% endif %}>Coffee:Water (Low to High)</option>
+            <option value="coffee_water_desc" {% if sort_by == "coffee_water_desc" %}selected{% endif %}>Coffee:Water (High to Low)</option>
+            <option value="rating_asc" {% if sort_by == "rating_asc" %}selected{% endif %}>Rating (Low to High)</option>
+            <option value="rating_desc" {% if sort_by == "rating_desc" %}selected{% endif %}>Rating (High to Low)</option>
+        </select>
+        
+        </p>
         </span>
     </div>
         
@@ -60,10 +70,9 @@
             <tbody>
                 {% for row in data %}
                 <tr>
-                    {% for value in row.values() %}
-                    {% if loop.last %}
-                        {% set filename = value %}
-                        <td><a href="/static/roastplots/{{ filename }}" target="_blank">{{ filename }}</a></td>
+                    {% for column, value in row.items() %}
+                    {% if column == 'roast' %}
+                        <td><a href="/static/roastplots/{{ value }}" target="_blank">{{ value }}</a></td>
                     {% else %}
                         <td>{{ value }}</td>
                     {% endif %}
@@ -72,21 +81,20 @@
                 {% endfor %}
             </tbody>
         </table>
+        {% else %}
+            <p>No data found.</p>
+        {% endif %}
     </div>
         
     <div class="pagination">
         {% if page > 1 %}
-        <a href="/?page={{ page - 1 }}{% if filter_value %}&filter={{ filter_value }}{% endif %}">Previous</a>
+        <a href="{{ url_for('drinkLibrary', page=page-1, drink=drink_filter, roast=roast_filter, sort_by=sort_by) }}">Previous</a>
         {% endif %}
 
         <span>Page {{ page }} of {{ total_pages }}</span>
 
         {% if page < total_pages %}
-        <a href="/?page={{ page + 1 }}{% if filter_value %}&filter={{ filter_value }}{% endif %}">Next</a>
-        {% endif %}
-        
-        {% else %}
-        <p>No data found.</p>
+        <a href="{{ url_for('drinkLibrary', page=page+1, drink=drink_filter, roast=roast_filter, sort_by=sort_by) }}">Next</a>
         {% endif %}
     </div>
     
@@ -94,7 +102,8 @@
         function applyFilters() {
             const drinkValue = document.getElementById('drinkFilter').value;
             const roastValue = document.getElementById('roastFilter').value;
-            
+            const sortValue = document.getElementById('sortOrder').value;
+
             let url = 'drinkLibrary';
             let params = [];
             if (drinkValue && drinkValue !== "all") {
@@ -103,6 +112,10 @@
             if (roastValue && roastValue !== "all") {
                 params.push(`roast=${encodeURIComponent(roastValue)}`);
             }
+            if (sortValue && sortValue !== "date_desc") { // Only add sort param if not default
+                params.push(`sort_by=${encodeURIComponent(sortValue)}`);
+            }
+
             if (params.length > 0) {
                 url += `?${params.join('&')}`;
             }

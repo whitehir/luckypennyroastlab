@@ -1,13 +1,200 @@
 <!DOCTYPE html>
 <html>
+    
 <head>
     <title>Lucky Penny Roast Lab</title>
+    <link rel="icon" type="image/x-icon" href="/static/US_One_Cent_Obv.png">
     <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&family=Rock+Salt&display=swap" rel="stylesheet">
 </head>
-<body id="main-body">
-    <div>
-    	<h1>Record a New Drink</h1>
+
+<body>
+    <div class="page-wrapper" align="center">
+    <h1 class="rock-salt-regular">Lucky Penny Roast Lab</h1>
+    <div align="center">
+        <table style="width: 80%;" cellpadding="0" align="center">
+                <tr align="center">
+                    <a href="/" style="color: white;"><img src="static/lprl-banner-1.png"></a></td>
+                    <a href="/recordRoast" style="color: white;"><img src="static/lprl-banner-2.png"></a>
+                    <a href="/drinkLibrary" style="color: white;"><img src="static/lprl-banner-3.png"></a>
+                    <a href="/recordDrink" style="color: white;"><img src="static/lprl-banner-4.png"></a>
+                </tr>
+        </table>
     </div>
-    <p><a href="/">Back</a></p>
+    
+    <div class="inner-content" align="center">
+        <h2 class="cutive-mono-regular" style="font-size:32px" align="center">Record New Drink</h2>
+        
+        <form action="/submitDrink" method="POST" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; margin-top: 20px;">
+            <div style="display: flex; flex-direction: row; align-items: flex-start; gap: 40px">
+                <div style="display: flex; flex-direction: column; align-items: flex-start">
+                    <label style="display: block; text-align: left; margin-bottom: 5px;" for="date">Date:</label>
+                    <input type="date" id="date" name="date" pattern="\d{4}-\d{2}-\d{2}" placeholder="YYYY-MM-DD" required style="width: 180px; height: 26px; border-radius: 8px; padding: 10px; border: 1px solid #aaa; font-size: 16px">
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                    <label style="display: block; text-align: left; margin-bottom: 5px;" for="drink">Drink:</label>
+                    <select id="drink" name="drink" required style="width: 201.6px; height: 48px; border-radius: 8px; padding: 10px; border: 1px solid #aaa;">
+                    <option value="" disabled selected hidden></option>
+                    <option value="Americano">Americano</option>
+                    <option value="Cappuccino">Cappuccino</option>
+                    <option value="Cold Brew">Cold Brew</option>
+                    <option value="Cortado">Cortado</option>
+                    <option value="Drip">Drip</option>
+                    <option value="Espresso">Espresso</option>
+                    <option value="Latte">Latte</option>
+                    <option value="Pour Over">Pour Over</option>
+                    </select>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                    <label for="icedToggle" style="margin-left: 8px; margin-bottom: 10px; margin-right: 165px">Iced:</label>
+                    <label class="switch">
+                        <input type="checkbox" id="icedToggle" onchange="updateDrink()">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div style="display: flex; flex-direction: row; align-items: flex-start; gap: 40px">
+                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                    <label style="display: block; text-align: left; margin-bottom: 5px;" for="grind">Grind:</label>
+                    <select id="grind" name="grind" required style="width: 201.6px; height: 48px; border-radius: 8px; padding: 10px; border: 1px solid #aaa;">
+                        <option value="" disabled selected hidden></option>
+                        <option value="G1">G1</option>
+                        <option value="G2">G2</option>
+                        <option value="G3">G3</option>
+                        <option value="G4">G4</option>
+                        <option value="G5">G5</option>
+                        <option value="G6">G6</option>
+                        <option value="G7">G7</option>
+                        <option value="G8">G8</option>
+                        <option value="G9">G9</option>
+                        <option value="G10">G10</option>
+                        <option value="G11">G11</option>
+                        <option value="G12">G12</option>
+                        <option value="G13">G13</option>
+                        <option value="G14">G14</option>
+                        <option value="G15">G15</option>
+                        <option value="G16">G16</option>
+                    </select>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: flex-start">
+                    <label for="duration" style="align: left">Duration:</label>
+                    <input type="text" id="duration" name="duration" pattern="[0-9]{1,3}:[0-5][0-9]" placeholder="MM:SS" required style="width: 180px; height: 26px; border-radius: 8px; padding: 10px; margin-right: 241.01px; border: 1px solid #aaa; font-size: 18px">
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: row; align-items: flex-start; gap: 40px">
+                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                    <label for="mass_in">Mass In:</label>
+                    <input type="number" step="any" id="mass_in" name="mass_in" required style="width: 180px; height: 26px; border-radius: 8px; padding: 10px; border: 1px solid #aaa; font-size: 20px">
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                    <label for="mass_out">Mass Out:</label>
+                    <input type="number" step="any" id="mass_out" name="mass_out" required style="width: 180px; height: 26px; border-radius: 8px; padding: 10px; border: 1px solid #aaa; font-size: 20px">
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                    <label for="milk">Milk:</label>
+                    <input type="number" step="any" id="milk" name="milk" required style="width: 180px; height: 26px; border-radius: 8px; padding: 10px; border: 1px solid #aaa; font-size: 20px">
+                </div>
+            </div>
+            
+            <div style="display: flex; flex-direction: row; align-items: flex-start; gap: 40px">
+                <div style="display: flex; flex-direction: column; align-items: flex-start">            
+                    <label for="coffee_water">Coffee Ratio:</label>
+                    <input type="number" step="any" id="coffee_water" name="coffee_water" readonly style="width: 180px; height: 26px; border-radius: 8px; padding: 10px; border: 1px solid #aaa; font-size: 20px">
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                    <label for="milk_coffee">Milk Ratio:</label>
+                    <input type="number" step="any" id="milk_coffee" name="milk_coffee" readonly style="width: 180px; height: 26px; border-radius: 8px; padding: 10px; border: 1px solid #aaa; font-size: 20px">
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                    <label style="display: block; text-align: left;" for="grind">Rating:</label>
+                    <select id="rating" name="rating" required style="width: 201.6px; height: 48px; border-radius: 8px; padding: 10px; border: 1px solid #aaa;">
+                        <option value="" disabled selected hidden></option>
+                        <option value="0.0">0.0</option>
+                        <option value="0.5">0.5</option>
+                        <option value="1.0">1.0</option>
+                        <option value="1.5">1.5</option>
+                        <option value="2.0">2.0</option>
+                        <option value="2.5">2.5</option>
+                        <option value="3.0">3.0</option>
+                        <option value="3.5">3.5</option>
+                        <option value="4.0">4.0</option>
+                        <option value="4.5">4.5</option>
+                        <option value="5.0">5.0</option>
+                        <option value="5.5">5.5</option>
+                        <option value="6.0">6.0</option>
+                        <option value="6.5">6.5</option>
+                        <option value="7.0">7.0</option>
+                        <option value="7.5">7.5</option>
+                        <option value="8.0">8.0</option>
+                        <option value="8.5">8.5</option>
+                        <option value="9.0">9.0</option>
+                        <option value="9.5">9.5</option>
+                        <option value="10.0">10.0</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div style="display: flex; flex-direction: row; align-items: flex-start; gap: 40px">
+                <div style="display: flex; flex-direction: column; align-items: flex-start">  
+                    <label for="profile">Profile:</label>
+                    <input type="text" id="profile" name="profile" required style="width: 421.6px; height: 26px; border-radius: 8px; padding: 10px; margin-right: 241.6px; border: 1px solid #aaa; font-size: 20px">
+                </div>
+            </div>
+            
+            <div style="display: flex; flex-direction: row; align-items: flex-start; gap: 40px">
+                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                    <label for="comments">Comments:</label>
+                    <input type="text" id="comments" name="comments" required style="width: 421.6px; height: 26px; border-radius: 8px; padding: 10px; border: 1px solid #aaa; font-size: 20px">
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                    <label style="display: block; text-align: left;" for="user">User:</label>
+                    <select id="user" name="user" required style="width: 201.6px; height: 48px; border-radius: 8px; padding: 10px; border: 1px solid #aaa;">
+                        <option value="" disabled selected hidden></option>
+                        <option value="Whitehill, Robert">Whitehill, Robert</option>
+                        <option value="Whitehill, Tessy">Whitehill, Tessy</option>
+                    </select>
+                </div>
+            </div>
+
+        <button class="button-55" type="submit">Record Drink</button>
+        </form>
+    </div>
+    
+<!--
+    <div align="center" style="padding: 30px">
+        <img src="static/lprl-bottom.png" style="max-width: 900px" height="10px">
+    </div>
+-->
+    </div>
 </body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const massIn = document.getElementById('mass_in');
+        const massOut = document.getElementById('mass_out');
+        const milk = document.getElementById('milk');
+
+        function calculateCoffeeRatio() {
+            const inVal = parseFloat(massIn.value) || 0;
+            const outVal = parseFloat(massOut.value) || 0;
+            const calculatedCoffeeRatio = outVal / inVal;
+            coffee_water.value = calculatedCoffeeRatio.toFixed(1);
+        }
+
+        function calculateMilkRatio() {
+            const outVal = parseFloat(massOut.value) || 0;
+            const milkVal = parseFloat(milk.value) || 0;
+            const calculatedMilkRatio = milkVal / outVal;
+            milk_coffee.value = calculatedMilkRatio.toFixed(1);
+        }
+        
+        massOut.addEventListener('input', calculateCoffeeRatio);
+        milk.addEventListener('input', calculateMilkRatio);
+    });
+</script>
+
 </html>

@@ -64,6 +64,7 @@ def drinkLibrary():
     page = request.args.get('page', 1, type=int)
     drink_filter = request.args.get('drink')
     roast_filter = request.args.get('roast')
+    sort_by = request.args.get('sort_by', 'date_desc') # Default sort
     
     try:
         conn = mysql.connector.connect(
@@ -86,8 +87,18 @@ def drinkLibrary():
         
         if where_clauses:
             sql += " WHERE " + " AND ".join(where_clauses)
-        
-        sql += " ORDER BY date DESC"
+
+        if sort_by == 'coffee_water_asc':
+            sql += " ORDER BY coffee_water ASC"
+        elif sort_by == 'coffee_water_desc':
+            sql += " ORDER BY coffee_water DESC"
+        elif sort_by == 'rating_asc':
+            sql += " ORDER BY rating ASC"
+        elif sort_by == 'rating_desc':
+            sql += " ORDER BY rating DESC"
+        else: # Default to date_desc
+            sql += " ORDER BY date DESC"
+
         sql += f" LIMIT {ROWS_PER_PAGE} OFFSET {(page - 1) * ROWS_PER_PAGE}"
         
         cursor.execute(sql, tuple(params))
@@ -103,7 +114,7 @@ def drinkLibrary():
         total_rows = cursor.fetchone()['COUNT(*)']
         total_pages = (total_rows + ROWS_PER_PAGE - 1) // ROWS_PER_PAGE
         
-        return render_template('drinkLibrary.html', data=results, drink_filter=drink_filter, roast_filter=roast_filter, page=page, total_pages=total_pages)
+        return render_template('drinkLibrary.html', data=results, drink_filter=drink_filter, roast_filter=roast_filter, page=page, total_pages=total_pages, sort_by=sort_by)
 
     except mysql.connector.Error as err:
         return f"Error: {err}"
@@ -158,8 +169,50 @@ def submitRoast():
     return "Invalid request"
 
 @app.route('/recordDrink')
-def recordDink():
+def recordDrink():
 	return render_template('recordDrink.html')
+
+@app.route('/submitDrink', methods=['POST'])
+def submitDrink():
+    if request.method == 'POST':
+        date = request.form['date']
+        drink = request.form['drink']
+        grind = request.form['grind']
+        duration = request.form['duration']
+        mass_in = request.form['mass_in']
+        mass_out = request.form['mass_out']
+        coffee_water = request.form['coffee_water']
+        milk = request.form['milk']
+        milk_coffee = request.form['milk_coffee']
+        rating = request.form['rating']
+        roast = request.form['roast']
+        comments = request.form['comments']
+        
+        formatted_duration = f"00:{duration}"
+
+        try:
+            conn = mysql.connector.connect(
+            host="localhost",
+            user="grafanaReader",
+            password="spw",
+            database="coach")
+            
+            cursor = conn.cursor()
+            sql = "INSERT INTO drink_table (date, drink, grind, duration, mass_in, mass_out, coffee_water, milk, milk_coffee, rating, roast, comments) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            values = (date, drink, grind, duration, mass_in, mass_out, coffee_water, milk, milk_coffee, rating, roast, comments)
+            cursor.execute(sql, values)
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return redirect(url_for('home'))
+            
+        except mysql.connector.Error as err:
+            return f"Error recording roast: {err}"
+        finally:
+            if 'conn' in locals() and conn.is_connected():
+                cursor.close()
+                conn.close()
+    return "Invalid request"
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
