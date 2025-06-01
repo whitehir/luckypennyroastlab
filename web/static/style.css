@@ -75,6 +75,7 @@ img {
     max-width: 280px;
     height: auto;
     display: inline-flex;
+    vertical-align: middle;
     
 }
 
@@ -132,7 +133,9 @@ a:hover {
   white-space: nowrap;
 }
 
+/*
 #roast-table tr:nth-child(even){background-color: #f2f2f2;}
+*/
 
 #roast-table tr:hover {background-color: #ddd;}
 
