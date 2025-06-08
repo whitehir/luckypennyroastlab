@@ -64,6 +64,7 @@ def drinkLibrary():
     page = request.args.get('page', 1, type=int)
     drink_filter = request.args.get('drink')
     roast_filter_value = request.args.get('roast')
+    user_filter_value = request.args.get('user')
     sort_by = request.args.get('sort_by', 'date_desc') # Default sort
     
     try:
@@ -84,6 +85,9 @@ def drinkLibrary():
         if roast_filter_value and roast_filter_value != "all":
             where_clauses.append("roast_table.roast = %s")
             params.append(roast_filter_value)
+        if user_filter_value and user_filter_value != "all":
+            where_clauses.append("drink_table.user = %s")
+            params.append(user_filter_value)
         
         if where_clauses:
             sql += " WHERE " + " AND ".join(where_clauses)
@@ -114,7 +118,7 @@ def drinkLibrary():
         total_rows = cursor.fetchone()['COUNT(*)']
         total_pages = (total_rows + ROWS_PER_PAGE - 1) // ROWS_PER_PAGE
 
-        return render_template('drinkLibrary.html', data=results, drink_filter=drink_filter, roast_filter=roast_filter_value, page=page, total_pages=total_pages, sort_by=sort_by)
+        return render_template('drinkLibrary.html', data=results, drink_filter=drink_filter, roast_filter=roast_filter_value, user_filter=user_filter_value, page=page, total_pages=total_pages, sort_by=sort_by)
 
     except mysql.connector.Error as err:
         return f"Error: {err}"
@@ -200,7 +204,7 @@ def submitDrink():
             
             cursor = conn.cursor()
             sql = "INSERT INTO drink_table (date, drink, grind, duration, mass_in, mass_out, coffee_water, milk, milk_coffee, rating, roast, comments) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            values = (date, drink, grind, duration, mass_in, mass_out, coffee_water, milk, milk_coffee, rating, profile, comments)
+            values = (date, drink, grind, formatted_duration, mass_in, mass_out, coffee_water, milk, milk_coffee, rating, profile, comments)
             cursor.execute(sql, values)
             conn.commit()
             cursor.close()
