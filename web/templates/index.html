@@ -25,7 +25,7 @@
     </div>
     
     <div class="inner-content" align="center">
-        <h2 class="cutive-mono-regular" style="font-size:32px" align="center">Drink Library</h2>
+        <h2 class="cutive-mono-regular" style="font-size:32px" align="center">Roast Library</h2>
         
         <div style="display: flex; flex-direction: row; overflow-x: auto; align-items: center; justify-content: center; gap: 40px; margin-top: 20px; margin-bottom: 20px">
             <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px">
@@ -51,10 +51,17 @@
             {% if data %}
             <table id="roast-table"  style="width: 75%; overflow-x: auto;" align="center">
                 <thead>
-                    <tr>
-                        {% for column in data[0].keys() %}
-                        <th>{{ column }}</th>
-                        {% endfor %}
+                    <tr style="white-space: nowrap">
+                        <th style="border-top-left-radius: 10px">Date</th>
+                        <th>Country</th>
+                        <th>Farm</th>
+                        <th>Roaster</th>
+                        <th>Roast</th>
+                        <th>Duration</th>
+                        <th>Mass In (g)</th>
+                        <th>Mass Out (g)</th>
+                        <th>Loss</th>
+                        <th style="border-top-right-radius: 10px;">Profile</th>
                     </tr>
                 </thead>
                 <tbody>
