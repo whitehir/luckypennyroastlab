@@ -144,7 +144,7 @@
                 <a href="{{ url_for('drinkLibrary', page=page-1, drink=drink_filter, roast=roast_filter, sort_by=sort_by) }}"><img src="/static/arrow_back.png"></a>
             {% endif %}
 
-            <span class="rock-salt-regular">Page {{ page }} of {{ total_pages }}</span>
+            <span class="cutive-mono-regular">Page {{ page }} of {{ total_pages }}</span>
 
             {% if page < total_pages %}
                 <a href="{{ url_for('drinkLibrary', page=page+1, drink=drink_filter, roast=roast_filter, sort_by=sort_by) }}"><img src="/static/arrow_forward.png"></a>
