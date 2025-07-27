@@ -32,14 +32,29 @@
                 <label for="countryFilter">Country</label>
                 <select id="countryFilter" onchange="applyFilters()" class="user-box-dropdown">
                     <option value="all">All</option>
+                    <option value="Brazil" {% if country_filter == "Brazil" %}selected{% endif %}>Brazil</option>
+                    <option value="Burundi" {% if country_filter == "Burundi" %}selected{% endif %}>Burundi</option>
+                    <option value="Columbia" {% if country_filter == "Columbia" %}selected{% endif %}>Columbia</option>
+                    <option value="Costa Rica" {% if country_filter == "Costa Rica" %}selected{% endif %}>Costa Rica</option>
                     <option value="Ethiopia" {% if country_filter == "Ethiopia" %}selected{% endif %}>Ethiopia</option>
+                    <option value="Guatemala" {% if country_filter == "Guatemala" %}selected{% endif %}>Guatemala</option>
+                    <option value="Hawaii" {% if country_filter == "Hawaii" %}selected{% endif %}>Hawaii</option>
+                    <option value="Honduras" {% if country_filter == "Honduras" %}selected{% endif %}>Honduras</option>
+                    <option value="Java" {% if country_filter == "Java" %}selected{% endif %}>Java</option>
                     <option value="Kenya" {% if country_filter == "Kenya" %}selected{% endif %}>Kenya</option>
+                    <option value="Mexico" {% if country_filter == "Mexico" %}selected{% endif %}>Mexico</option>
+                    <option value="Peru" {% if country_filter == "Peru" %}selected{% endif %}>Peru</option>
+                    <option value="Rwanda" {% if country_filter == "Rwanda" %}selected{% endif %}>Rwanda</option>
+                    <option value="Sumatra" {% if country_filter == "Sumatra" %}selected{% endif %}>Sumatra/option>
+                    <option value="Tanzania" {% if country_filter == "Tanzania" %}selected{% endif %}>Tanzania</option>
+                    <option value="Yemen" {% if country_filter == "Yemen" %}selected{% endif %}>Yemen</option>
+                    <option value="Zambia" {% if country_filter == "Zambia" %}selected{% endif %}>Zambia</option>
                 </select>
             </div>
         
             <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px">
                 <label for="roastFilter">Roast:</label>
-                <select id="roastFilter" onchange="applyFilters()" style="width: 125px">
+                <select id="roastFilter" onchange="applyFilters()" class="user-box-dropdown">
                     <option value="all">All</option>
                     <option value="Full City" {% if roast_filter == "Full City" %}selected{% endif %}>Full City</option>
                     <option value="Full City+" {% if roast_filter == "Full City+" %}selected{% endif %}>Full City+</option>
@@ -83,13 +98,13 @@
         
         <div class="pagination">
             {% if page > 1 %}
-            <a href="/?page={{ page - 1 }}{% if filter_value %}&filter={{ filter_value }}{% endif %}">Previous</a>
+            <a href="/?page={{ page - 1 }}{% if filter_value %}&filter={{ filter_value }}{% endif %}"><img src="/static/arrow_back.png"></a>
             {% endif %}
 
-            <span>Page {{ page }} of {{ total_pages }}</span>
+            <span class="rock-salt-regular">Page {{ page }} of {{ total_pages }}</span>
 
             {% if page < total_pages %}
-            <a href="/?page={{ page + 1 }}{% if filter_value %}&filter={{ filter_value }}{% endif %}">Next</a>
+            <a href="/?page={{ page + 1 }}{% if filter_value %}&filter={{ filter_value }}{% endif %}"><img src="/static/arrow_forward.png"></a>
             {% endif %}
             
             {% else %}

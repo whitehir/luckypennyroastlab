@@ -59,7 +59,6 @@ def home():
             cursor.close()
             conn.close()
     
-# Drink Library
 @app.route('/drinkLibrary')
 def drinkLibrary():
     page = request.args.get('page', 1, type=int)
@@ -189,7 +188,7 @@ def recordDrink():
         sql_query = """
             SELECT DISTINCT profile
             FROM roast_table
-            WHERE (date >= CURDATE() - INTERVAL 2 MONTH OR date IS NULL)
+            WHERE (date >= CURDATE() - INTERVAL 6 MONTH OR date IS NULL)
             ORDER BY date DESC;
         """
         cursor.execute(sql_query)
