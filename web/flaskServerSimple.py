@@ -175,7 +175,38 @@ def submitRoast():
 
 @app.route('/recordDrink')
 def recordDrink():
-	return render_template('recordDrink.html')
+    try:
+        conn = mysql.connector.connect(
+            host="localhost",
+            user="grafanaReader",
+            password="spw",
+            database="coach"
+        )
+        cursor = conn.cursor()
+
+        # Fetch all unique roast profiles
+        sql_query = """
+            SELECT DISTINCT profile
+            FROM roast_table
+            WHERE (date >= CURDATE() - INTERVAL 2 MONTH OR date IS NULL)
+            ORDER BY date DESC;
+        """
+        cursor.execute(sql_query)
+        roast_profiles = [row[0] for row in cursor.fetchall()]
+
+        app.logger.info(f"Fetched roast profiles for dropdown: {roast_profiles}")
+
+        # Pass the list of profiles to the template
+        return render_template('recordDrink.html', roast_profiles=roast_profiles)
+
+    except mysql.connector.Error as err:
+        app.logger.error(f"MySQL Error fetching roast profiles: {err}")
+        return f"Error fetching roast profiles: {err}" # Display error to user for debugging
+
+    finally:
+        if 'conn' in locals() and conn.is_connected():
+            cursor.close()
+            conn.close()
 
 @app.route('/submitDrink', methods=['POST'])
 def submitDrink():
@@ -192,6 +223,7 @@ def submitDrink():
         rating = request.form['rating']
         profile = request.form['profile']
         comments = request.form['comments']
+        user = request.form['user']
         
         formatted_duration = f"00:{duration}"
 
@@ -203,8 +235,8 @@ def submitDrink():
             database="coach")
             
             cursor = conn.cursor()
-            sql = "INSERT INTO drink_table (date, drink, grind, duration, mass_in, mass_out, coffee_water, milk, milk_coffee, rating, roast, comments) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            values = (date, drink, grind, formatted_duration, mass_in, mass_out, coffee_water, milk, milk_coffee, rating, profile, comments)
+            sql = "INSERT INTO drink_table (date, drink, grind, duration, mass_in, mass_out, coffee_water, milk, milk_coffee, rating, roast, comments, user) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            values = (date, drink, grind, formatted_duration, mass_in, mass_out, coffee_water, milk, milk_coffee, rating, profile, comments, user)
             cursor.execute(sql, values)
             conn.commit()
             cursor.close()
