@@ -37,7 +37,7 @@
                 </select>
             </div>
         
-            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px"></div>
+            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px">
                 <label for="roastFilter">Roast:</label>
                 <select id="roastFilter" onchange="applyFilters()" style="width: 125px">
                     <option value="all">All</option>
@@ -45,51 +45,52 @@
                     <option value="Full City+" {% if roast_filter == "Full City+" %}selected{% endif %}>Full City+</option>
                 </select>
             </div>
-    </div>
+        </div>
         
-    <div style="overflow-x: auto">
-        {% if data %}
-        <table id="roast-table"  style="width: 75%; overflow-x: auto;" align="center">
-            <thead>
-                <tr>
-                    {% for column in data[0].keys() %}
-                    <th>{{ column }}</th>
+        <div style="overflow-x: auto">
+            {% if data %}
+            <table id="roast-table"  style="width: 75%; overflow-x: auto;" align="center">
+                <thead>
+                    <tr>
+                        {% for column in data[0].keys() %}
+                        <th>{{ column }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data %}
+                    <tr>
+                        {% for value in row.values() %}
+                        {% if loop.last %}
+                            {% set filename = value %}
+                            <td><a href="/static/roastplots/{{ filename }}" target="_blank">{{ filename }}</a></td>
+                        {% else %}
+                            <td>{{ value }}</td>
+                        {% endif %}
+                        {% endfor %}
+                    </tr>
                     {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in data %}
-                <tr>
-                    {% for value in row.values() %}
-                    {% if loop.last %}
-                        {% set filename = value %}
-                        <td><a href="/static/roastplots/{{ filename }}" target="_blank">{{ filename }}</a></td>
-                    {% else %}
-                        <td>{{ value }}</td>
-                    {% endif %}
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+                </tbody>
+            </table>
+        </div>
         
-    <div class="pagination">
-        {% if page > 1 %}
-        <a href="/?page={{ page - 1 }}{% if filter_value %}&filter={{ filter_value }}{% endif %}">Previous</a>
-        {% endif %}
+        <div class="pagination">
+            {% if page > 1 %}
+            <a href="/?page={{ page - 1 }}{% if filter_value %}&filter={{ filter_value }}{% endif %}">Previous</a>
+            {% endif %}
 
-        <span>Page {{ page }} of {{ total_pages }}</span>
+            <span>Page {{ page }} of {{ total_pages }}</span>
 
-        {% if page < total_pages %}
-        <a href="/?page={{ page + 1 }}{% if filter_value %}&filter={{ filter_value }}{% endif %}">Next</a>
-        {% endif %}
-        
-        {% else %}
-        <p>No data found.</p>
-        {% endif %}
+            {% if page < total_pages %}
+            <a href="/?page={{ page + 1 }}{% if filter_value %}&filter={{ filter_value }}{% endif %}">Next</a>
+            {% endif %}
+            
+            {% else %}
+            <p>No data found.</p>
+            {% endif %}
+        </div>
     </div>
-    
+
     <script>
         function applyFilters() {
             const countryValue = document.getElementById('countryFilter').value;

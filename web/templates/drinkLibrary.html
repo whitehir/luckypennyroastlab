@@ -78,78 +78,78 @@
         
         </div>
         
-    <div style="overflow-x: auto">
-        <table id="roast-table"  style="width: 95%; overflow-x: auto;" align="center">
-            <thead>
-                <tr style="white-space: nowrap">
-                    <th style="border-top-left-radius: 10px">Date</th>
-                    <th>Drink</th>
-                    <th>Grind</th>
-                    <th>Duration</th>
-                    <th>Mass In (g)</th>
-                    <th>Mass Out (g)</th>
-                    <th>Coffee/Water</th>
-                    <th>Milk (g)</th>
-                    <th>Milk/Coffee</th>
-                    <th>Rating</th>
-                    <th>Roast</th>
-                    <th>Profile</th>
-                    <th>Comments</th>
-                    <th style="border-top-right-radius: 10px">User</th>
-                </tr>
-            </thead>
-            <tbody>
-                    {% if data %}
-                        {% for row in data %}
+        <div style="overflow-x: auto">
+            <table id="roast-table"  style="width: 95%; overflow-x: auto;" align="center">
+                <thead>
+                    <tr style="white-space: nowrap">
+                        <th style="border-top-left-radius: 10px">Date</th>
+                        <th>Drink</th>
+                        <th>Grind</th>
+                        <th>Duration</th>
+                        <th>Mass In (g)</th>
+                        <th>Mass Out (g)</th>
+                        <th>Coffee/Water</th>
+                        <th>Milk (g)</th>
+                        <th>Milk/Coffee</th>
+                        <th>Rating</th>
+                        <th>Roast</th>
+                        <th>Profile</th>
+                        <th>Comments</th>
+                        <th style="border-top-right-radius: 10px">User</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        {% if data %}
+                            {% for row in data %}
+                                <tr>
+                                    <td>{{ row.date }}</td>
+                                    <td>{{ row.drink }}</td>
+                                    <td>{{ row.grind }}</td>
+                                    <td>{{ row.duration }}</td>
+                                    <td>{{ row.mass_in }}</td>
+                                    <td>{{ row.mass_out }}</td>
+                                    <td>{{ row.coffee_water }}</td>
+                                    <td>{{ row.milk }}</td>
+                                    <td>{{ row.milk_coffee }}</td>
+                                    <td>{{ row.rating }}</td>
+                                    <td>{{ row.roast_name }}</td>
+                                    <td>
+                                        {% if row.roast and row.roast.endswith('.png') %}
+                                            <a href="/static/roastplots/{{ row.roast }}" target="_blank">
+                                                <img src="/static/link.png">
+                                            </a>
+                                        {% elif row.roast %}
+                                            <a href="https://www.google.com/search?q={{ row.roast|urlencode }}" target="_blank">
+                                                <img src="/static/link-global.png">
+                                            </a>
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ row.comments }}</td>
+                                    <td>{{ row.user }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
                             <tr>
-                                <td>{{ row.date }}</td>
-                                <td>{{ row.drink }}</td>
-                                <td>{{ row.grind }}</td>
-                                <td>{{ row.duration }}</td>
-                                <td>{{ row.mass_in }}</td>
-                                <td>{{ row.mass_out }}</td>
-                                <td>{{ row.coffee_water }}</td>
-                                <td>{{ row.milk }}</td>
-                                <td>{{ row.milk_coffee }}</td>
-                                <td>{{ row.rating }}</td>
-                                <td>{{ row.roast_name }}</td>
-                                <td>
-                                    {% if row.roast and row.roast.endswith('.png') %}
-                                        <a href="/static/roastplots/{{ row.roast }}" target="_blank">
-                                            <img src="/static/link.png">
-                                        </a>
-                                    {% elif row.roast %}
-                                        <a href="https://www.google.com/search?q={{ row.roast|urlencode }}" target="_blank">
-                                            <img src="/static/link-global.png">
-                                        </a>
-                                    {% else %}
-                                        N/A
-                                    {% endif %}
-                                </td>
-                                <td>{{ row.comments }}</td>
-                                <td>{{ row.user }}</td>
+                                <td colspan="13">No drink records found.</td>
                             </tr>
-                        {% endfor %}
-                    {% else %}
-                        <tr>
-                            <td colspan="13">No drink records found.</td>
-                        </tr>
-                    {% endif %}
-                </tbody>
-            </table>
-    </div>
+                        {% endif %}
+                    </tbody>
+                </table>
+        </div>
         
-    <div class="pagination">
-        {% if page > 1 %}
-            <a href="{{ url_for('drinkLibrary', page=page-1, drink=drink_filter, roast=roast_filter, sort_by=sort_by) }}"><img src="/static/arrow_back.png"></a>
-        {% endif %}
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="{{ url_for('drinkLibrary', page=page-1, drink=drink_filter, roast=roast_filter, sort_by=sort_by) }}"><img src="/static/arrow_back.png"></a>
+            {% endif %}
 
-        <span>Page {{ page }} of {{ total_pages }}</span>
+            <span>Page {{ page }} of {{ total_pages }}</span>
 
-        {% if page < total_pages %}
-            <a href="{{ url_for('drinkLibrary', page=page+1, drink=drink_filter, roast=roast_filter, sort_by=sort_by) }}"><img src="/static/arrow_forward.png"></a>
-        {% endif %}
-    </div>
+            {% if page < total_pages %}
+                <a href="{{ url_for('drinkLibrary', page=page+1, drink=drink_filter, roast=roast_filter, sort_by=sort_by) }}"><img src="/static/arrow_forward.png"></a>
+            {% endif %}
+        </div>
     </div>
     
     <script>
