@@ -59,6 +59,7 @@ def home():
             cursor.close()
             conn.close()
     
+# Drink Library
 @app.route('/drinkLibrary')
 def drinkLibrary():
     page = request.args.get('page', 1, type=int)
