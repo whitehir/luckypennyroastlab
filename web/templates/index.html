@@ -7,10 +7,11 @@
     <link rel="stylesheet" href="/static/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&family=Rock+Salt&display=swap" rel="stylesheet">
 </head>
 
 <body>
+    <div class="page-wrapper" align="center">
     <h1 class="rock-salt-regular">Lucky Penny Roast Lab</h1>
     <div align="center">
         <table style="width: 80%;" cellpadding="0" align="center">
@@ -23,22 +24,27 @@
         </table>
     </div>
     
-    <div align="center">
-        <h2 align="center">Roast Library</h2>
+    <div class="inner-content" align="center">
+        <h2 class="cutive-mono-regular" style="font-size:32px" align="center">Drink Library</h2>
         
-        <span>
-        <p>Country: <select id="countryFilter" onchange="applyFilters()" style="width: 125px">
-            <option value="all">All</option>
-            <option value="Ethiopia" {% if country_filter == "Ethiopia" %}selected{% endif %}>Ethiopia</option>
-            <option value="Kenya" {% if country_filter == "Kenya" %}selected{% endif %}>Kenya</option>
-        </select>
+        <div style="display: flex; flex-direction: row; overflow-x: auto; align-items: center; justify-content: center; gap: 40px; margin-top: 20px; margin-bottom: 20px">
+            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px">
+                <label for="countryFilter">Country</label>
+                <select id="countryFilter" onchange="applyFilters()" class="user-box-dropdown">
+                    <option value="all">All</option>
+                    <option value="Ethiopia" {% if country_filter == "Ethiopia" %}selected{% endif %}>Ethiopia</option>
+                    <option value="Kenya" {% if country_filter == "Kenya" %}selected{% endif %}>Kenya</option>
+                </select>
+            </div>
         
-        Roast: <select id="roastFilter" onchange="applyFilters()" style="width: 125px">
-            <option value="all">All</option>
-            <option value="Full City" {% if roast_filter == "Full City" %}selected{% endif %}>Full City</option>
-            <option value="Full City+" {% if roast_filter == "Full City+" %}selected{% endif %}>Full City+</option>
-        </select></p>
-        </span>
+            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px"></div>
+                <label for="roastFilter">Roast:</label>
+                <select id="roastFilter" onchange="applyFilters()" style="width: 125px">
+                    <option value="all">All</option>
+                    <option value="Full City" {% if roast_filter == "Full City" %}selected{% endif %}>Full City</option>
+                    <option value="Full City+" {% if roast_filter == "Full City+" %}selected{% endif %}>Full City+</option>
+                </select>
+            </div>
     </div>
         
     <div style="overflow-x: auto">
