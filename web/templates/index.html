@@ -32,6 +32,7 @@
                 <label for="countryFilter">Country</label>
                 <select id="countryFilter" onchange="applyFilters()" class="user-box-dropdown">
                     <option value="all">All</option>
+                    <option value="Blend" {% if country_filter == "Blend" %}selected{% endif %}>Blend</option>
                     <option value="Brazil" {% if country_filter == "Brazil" %}selected{% endif %}>Brazil</option>
                     <option value="Burundi" {% if country_filter == "Burundi" %}selected{% endif %}>Burundi</option>
                     <option value="Columbia" {% if country_filter == "Columbia" %}selected{% endif %}>Columbia</option>
@@ -56,8 +57,12 @@
                 <label for="roastFilter">Roast:</label>
                 <select id="roastFilter" onchange="applyFilters()" class="user-box-dropdown">
                     <option value="all">All</option>
+                    <option value="City-" {% if roast_filter == "City-" %}selected{% endif %}>City-</option>
+                    <option value="City" {% if roast_filter == "City" %}selected{% endif %}>City</option>
+                    <option value="City+" {% if roast_filter == "City+" %}selected{% endif %}>City+</option>
                     <option value="Full City" {% if roast_filter == "Full City" %}selected{% endif %}>Full City</option>
                     <option value="Full City+" {% if roast_filter == "Full City+" %}selected{% endif %}>Full City+</option>
+                    <option value="French" {% if roast_filter == "French" %}selected{% endif %}>French</option>
                 </select>
             </div>
         </div>
