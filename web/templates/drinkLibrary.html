@@ -7,10 +7,11 @@
     <link rel="stylesheet" href="/static/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&family=Rock+Salt&display=swap" rel="stylesheet">
 </head>
 
 <body>
+    <div class="page-wrapper" align="center">
     <h1 class="rock-salt-regular">Lucky Penny Roast Lab</h1>
     <div align="center">
         <table style="width: 80%;" cellpadding="0" align="center">
@@ -23,103 +24,175 @@
         </table>
     </div>
     
-    <div align="center">
-        <h2 align="center">Drink Library</h2>
-        
-        <span>
-        <p>Drink: <select id="drinkFilter" onchange="applyFilters()" style="width: 125px">
-            <option value="all">All</option>
-            <option value="Americano" {% if drink_filter == "Americano" %}selected{% endif %}>Americano</option>
-            <option value="Espresso" {% if drink_filter == "Espresso" %}selected{% endif %}>Espresso</option>
-            <option value="Latte" {% if drink_filter == "Latte" %}selected{% endif %}>Latte</option>
-            <option value="Cappuccino" {% if drink_filter == "Cappuccino" %}selected{% endif %}>Cappuccino</option>
-            <option value="Cortado" {% if drink_filter == "Cortado" %}selected{% endif %}>Cortado</option>
-            <option value="Drip" {% if drink_filter == "Drip" %}selected{% endif %}>Drip</option>
-            <option value="Pour Over" {% if drink_filter == "Pour Over" %}selected{% endif %}>Pour Over</option>
-            <option value="Cold Brew" {% if drink_filter == "Cold Brew" %}selected{% endif %}>Cold Brew</option>
-        </select>
-        
-        Roast: <select id="roastFilter" onchange="applyFilters()" style="width: 125px">
-            <option value="all">All</option>
-            <option value="Full City" {% if roast_filter == "Full City" %}selected{% endif %}>Full City</option>
-            <option value="Full City+" {% if roast_filter == "Full City+" %}selected{% endif %}>Full City+</option>
-        </select>
+    <div class="inner-content" align="center">
+        <h2 class="cutive-mono-regular" style="font-size:32px" align="center">Drink Library</h2>
 
-        Sort By: <select id="sortOrder" onchange="applyFilters()" style="width: 200px">
-            <option value="date_desc">Date (Newest)</option>
-            <option value="coffee_water_asc" {% if sort_by == "coffee_water_asc" %}selected{% endif %}>Coffee:Water (Low to High)</option>
-            <option value="coffee_water_desc" {% if sort_by == "coffee_water_desc" %}selected{% endif %}>Coffee:Water (High to Low)</option>
-            <option value="rating_asc" {% if sort_by == "rating_asc" %}selected{% endif %}>Rating (Low to High)</option>
-            <option value="rating_desc" {% if sort_by == "rating_desc" %}selected{% endif %}>Rating (High to Low)</option>
-        </select>
+        <div style="display: flex; flex-direction: row; overflow-x: auto; align-items: center; justify-content: center; gap: 40px; margin-top: 20px; margin-bottom: 20px">
+            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px">
+                <label for="drinkFilter">Drink: </label>
+                <select id="drinkFilter" onchange="applyFilters()" class="user-box-dropdown">
+                    <option value="all">All</option>
+                    <option value="Americano" {% if drink_filter == "Americano" %}selected{% endif %}>Americano</option>
+                    <option value="Espresso" {% if drink_filter == "Espresso" %}selected{% endif %}>Espresso</option>
+                    <option value="Latte" {% if drink_filter == "Latte" %}selected{% endif %}>Latte</option>
+                    <option value="Cappuccino" {% if drink_filter == "Cappuccino" %}selected{% endif %}>Cappuccino</option>
+                    <option value="Cortado" {% if drink_filter == "Cortado" %}selected{% endif %}>Cortado</option>
+                    <option value="Drip" {% if drink_filter == "Drip" %}selected{% endif %}>Drip</option>
+                    <option value="Pour Over" {% if drink_filter == "Pour Over" %}selected{% endif %}>Pour Over</option>
+                    <option value="Cold Brew" {% if drink_filter == "Cold Brew" %}selected{% endif %}>Cold Brew</option>
+                </select>
+            </div>
         
-        </p>
-        </span>
-    </div>
+            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px">
+                <label for="roastFilter">Roast: </label>
+                <select id="roastFilter" onchange="applyFilters()" class="user-box-dropdown">
+                    <option value="all">All</option>
+                    <option value="City-" {% if roast_filter == "City-" %}selected{% endif %}>City-</option>
+                    <option value="City" {% if roast_filter == "City" %}selected{% endif %}>City</option>
+                    <option value="City+" {% if roast_filter == "City+" %}selected{% endif %}>City+</option>
+                    <option value="Full City" {% if roast_filter == "Full City" %}selected{% endif %}>Full City</option>
+                    <option value="Full City+" {% if roast_filter == "Full City+" %}selected{% endif %}>Full City+</option>
+                    <option value="French" {% if roast_filter == "French" %}selected{% endif %}>French</option>
+                </select>
+            </div>
         
-    <div style="overflow-x: auto">
-        {% if data %}
-        <table id="roast-table"  style="width: 75%; overflow-x: auto;" align="center">
-            <thead>
-                <tr>
-                    {% for column in data[0].keys() %}
-                    <th>{{ column }}</th>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in data %}
-                <tr>
-                    {% for column, value in row.items() %}
-                    {% if column == 'roast' %}
-                        <td><a href="/static/roastplots/{{ value }}" target="_blank">{{ value }}</a></td>
-                    {% else %}
-                        <td>{{ value }}</td>
-                    {% endif %}
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-            <p>No data found.</p>
-        {% endif %}
-    </div>
-        
-    <div class="pagination">
-        {% if page > 1 %}
-        <a href="{{ url_for('drinkLibrary', page=page-1, drink=drink_filter, roast=roast_filter, sort_by=sort_by) }}">Previous</a>
-        {% endif %}
+            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px">
+                <label for="userFilter">User: </label>
+                <select id="userFilter" onchange="applyFilters()" class="user-box-dropdown">
+                    <option value="all">All</option>
+                    <option value="Whitehill, Robert" {% if user_filter == "Whitehill, Robert" %}selected{% endif %}>Whitehill, Robert</option>
+                    <option value="Whitehill, Tessy" {% if user_filter == "Whitehill, Tessy" %}selected{% endif %}>Whitehill, Tessy</option>
+                </select>
+            </div>
 
-        <span>Page {{ page }} of {{ total_pages }}</span>
+            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px">
+                <label for="sortOrder">Sort: </label>
+                <select id="sortOrder" onchange="applyFilters()" class="user-box-dropdown" style="width: 350px">
+                    <option value="date_desc">Date (Newest)</option>
+                    <option value="coffee_water_asc" {% if sort_by == "coffee_water_asc" %}selected{% endif %}>Coffee:Water (Low to High)</option>
+                    <option value="coffee_water_desc" {% if sort_by == "coffee_water_desc" %}selected{% endif %}>Coffee:Water (High to Low)</option>
+                    <option value="rating_asc" {% if sort_by == "rating_asc" %}selected{% endif %}>Rating (Low to High)</option>
+                    <option value="rating_desc" {% if sort_by == "rating_desc" %}selected{% endif %}>Rating (High to Low)</option>
+                </select>
+            </div>
+        
+        </div>
+        
+        <div style="overflow-x: auto">
+            <table id="roast-table"  style="width: 95%; overflow-x: auto;" align="center">
+                <thead>
+                    <tr style="white-space: nowrap">
+                        <th style="border-top-left-radius: 10px">Date</th>
+                        <th>Drink</th>
+                        <th>Grind</th>
+                        <th>Duration</th>
+                        <th>Mass In (g)</th>
+                        <th>Mass Out (g)</th>
+                        <th>Coffee/Water</th>
+                        <th>Milk (g)</th>
+                        <th>Milk/Coffee</th>
+                        <th>Rating</th>
+                        <th>Roast</th>
+                        <th>Profile</th>
+                        <th>Comments</th>
+                        <th style="border-top-right-radius: 10px">User</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        {% if data %}
+                            {% for row in data %}
+                                <tr>
+                                    <td>{{ row.date }}</td>
+                                    <td>{{ row.drink }}</td>
+                                    <td>{{ row.grind }}</td>
+                                    <td>{{ row.duration }}</td>
+                                    <td>{{ row.mass_in }}</td>
+                                    <td>{{ row.mass_out }}</td>
+                                    <td>{{ row.coffee_water }}</td>
+                                    <td>{{ row.milk }}</td>
+                                    <td>{{ row.milk_coffee }}</td>
+                                    <td>{{ row.rating }}</td>
+                                    <td>{{ row.roast_name }}</td>
+                                    <td>
+                                        {% if row.roast and row.roast.endswith('.png') %}
+                                            <a href="/static/roastplots/{{ row.roast }}" target="_blank">
+                                                <img src="/static/link.png">
+                                            </a>
+                                        {% elif row.roast %}
+                                            <a href="https://www.google.com/search?q={{ row.roast|urlencode }}" target="_blank">
+                                                <img src="/static/link-global.png">
+                                            </a>
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ row.comments }}</td>
+                                    <td>{{ row.user }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="13">No drink records found.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+        </div>
+        
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="{{ url_for('drinkLibrary', page=page-1, drink=drink_filter, roast=roast_filter, sort_by=sort_by) }}"><img src="/static/arrow_back.png"></a>
+            {% endif %}
 
-        {% if page < total_pages %}
-        <a href="{{ url_for('drinkLibrary', page=page+1, drink=drink_filter, roast=roast_filter, sort_by=sort_by) }}">Next</a>
-        {% endif %}
+            <span class="cutive-mono-regular">Page {{ page }} of {{ total_pages }}</span>
+
+            {% if page < total_pages %}
+                <a href="{{ url_for('drinkLibrary', page=page+1, drink=drink_filter, roast=roast_filter, sort_by=sort_by) }}"><img src="/static/arrow_forward.png"></a>
+            {% endif %}
+        </div>
     </div>
     
     <script>
         function applyFilters() {
             const drinkValue = document.getElementById('drinkFilter').value;
             const roastValue = document.getElementById('roastFilter').value;
+            const userValue = document.getElementById('userFilter').value;
             const sortValue = document.getElementById('sortOrder').value;
 
-            let url = 'drinkLibrary';
-            let params = [];
+            const currentUrl = new URL(window.location.href);
+            const params = new URLSearchParams(currentUrl.search);
+
+            // Set or delete parameters based on selection
             if (drinkValue && drinkValue !== "all") {
-                params.push(`drink=${encodeURIComponent(drinkValue)}`);
-            }
-            if (roastValue && roastValue !== "all") {
-                params.push(`roast=${encodeURIComponent(roastValue)}`);
-            }
-            if (sortValue && sortValue !== "date_desc") { // Only add sort param if not default
-                params.push(`sort_by=${encodeURIComponent(sortValue)}`);
+                params.set('drink', drinkValue);
+            } else {
+                params.delete('drink');
             }
 
-            if (params.length > 0) {
-                url += `?${params.join('&')}`;
+            if (roastValue && roastValue !== "all") {
+                params.set('roast', roastValue);
+            } else {
+                params.delete('roast');
             }
-            window.location.href = url;
+
+            if (userValue && userValue !== "all") {
+                params.set('user', userValue);
+            } else {
+                params.delete('user');
+            }
+
+            // Only add sort_by if it's not the default
+            if (sortValue && sortValue !== "date_desc") {
+                params.set('sort_by', sortValue);
+            } else {
+                params.delete('sort_by');
+            }
+
+            // Always reset to page 1 when filters/sort change
+            params.delete('page');
+
+            currentUrl.search = params.toString();
+            window.location.href = currentUrl.toString();
         }
     </script>
 

@@ -29,7 +29,7 @@ body {
     background-image: url('/static/paper-texture.png');
     background-repeat: repeat;
     background-attachment: scroll;
-    background-position: center top; /* Centers the starting point of the tile */
+    background-position: center top;
     background-size: auto;
 }
 
@@ -42,6 +42,22 @@ body {
     padding: 10px;
     margin-top: 35px;
     border: 6px solid #5c8a8a;
+}
+
+
+.lprl-text-input {
+    height: 26px;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #aaa;
+    font-size: 18px
+}
+
+.lprl-dropdown {
+    height: 48px;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #aaa;
 }
 
 /* ------------------------------ Fonts ----------------------------- */
@@ -75,6 +91,7 @@ img {
     max-width: 280px;
     height: auto;
     display: inline-flex;
+    vertical-align: middle;
     
 }
 
@@ -118,7 +135,7 @@ a:hover {
 }
 
 #roast-table {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:  "Cutive Mono", monospace;
   border-collapse: collapse;
   width: 80%;
   margin-left: auto;
@@ -132,8 +149,6 @@ a:hover {
   white-space: nowrap;
 }
 
-#roast-table tr:nth-child(even){background-color: #f2f2f2;}
-
 #roast-table tr:hover {background-color: #ddd;}
 
 #roast-table th {
@@ -141,7 +156,7 @@ a:hover {
   padding-left: 8px;
   padding-bottom: 12px;
   text-align: left;
-  background-color: #3399ff;
+  background-color: #cccccc;
   color: white;
 }
 
@@ -155,11 +170,24 @@ a:hover {
     text-decoration: none;
 }
 
-
 select {
-      font-family: 'Verdana', sans-serif;
-      font-size: 18px;
-    }
+    font-family: "Cutive Mono", monospace;
+    font-size: 20px;
+}
+
+input {
+    font-family: "Cutive Mono", monospace;
+    font-size: 20px;
+}
+    
+.user-box-dropdown {
+    width: 180px;
+    height: 48px;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #aaa;
+}
+
     
 /*-------------------------------- Toggle Switch -----------------------------------*/
  .switch {
