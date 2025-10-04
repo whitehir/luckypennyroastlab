@@ -33,13 +33,14 @@
                 <select id="drinkFilter" onchange="applyFilters()" class="user-box-dropdown">
                     <option value="all">All</option>
                     <option value="Americano" {% if drink_filter == "Americano" %}selected{% endif %}>Americano</option>
-                    <option value="Espresso" {% if drink_filter == "Espresso" %}selected{% endif %}>Espresso</option>
-                    <option value="Latte" {% if drink_filter == "Latte" %}selected{% endif %}>Latte</option>
                     <option value="Cappuccino" {% if drink_filter == "Cappuccino" %}selected{% endif %}>Cappuccino</option>
+                    <option value="Cold Brew" {% if drink_filter == "Cold Brew" %}selected{% endif %}>Cold Brew</option>
                     <option value="Cortado" {% if drink_filter == "Cortado" %}selected{% endif %}>Cortado</option>
                     <option value="Drip" {% if drink_filter == "Drip" %}selected{% endif %}>Drip</option>
+                    <option value="Espresso" {% if drink_filter == "Espresso" %}selected{% endif %}>Espresso</option>
+                    <option value="Latte" {% if drink_filter == "Latte" %}selected{% endif %}>Latte</option>
                     <option value="Pour Over" {% if drink_filter == "Pour Over" %}selected{% endif %}>Pour Over</option>
-                    <option value="Cold Brew" {% if drink_filter == "Cold Brew" %}selected{% endif %}>Cold Brew</option>
+                    <option value="Percolator" {% if drink_filter == "Percolator" %}selected{% endif %}>Percolator</option>
                 </select>
             </div>
         
